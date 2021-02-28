@@ -1,0 +1,12 @@
+Run the below commands in a terminal to setup the database and role for the DomainNameChecker:
+
+psql postgres
+CREATE ROLE domain_name_checker WITH LOGIN PASSWORD 'LavaMap';
+CREATE DATABASE domain_name_checker;
+GRANT ALL PRIVILEGES ON DATABASE domain_name_checker TO domain_name_checker;
+\q
+
+psql domain_name_checker -U domain_name_checker
+CREATE TABLE domains ( domain_id SERIAL PRIMARY KEY, domain_name VARCHAR(8000) NOT NULL, date_added TIMESTAMP DEFAULT NOW(), date_removed TIMESTAMP NULL, search_term VARCHAR(8000) NOT NULL );
+CREATE INDEX domains_search_term_idx ON domains USING HASH(search_term);
+\q
